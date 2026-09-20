@@ -101,3 +101,14 @@ dist/
 7. Wedding video
 8. RSVP
 9. Thank-you / closing
+
+## New opening animation
+
+The updated version includes:
+- Temple-style double doors that open outward.
+- Diyas whose flames ignite during the opening animation.
+- A glowing floral garland during the opening.
+- Continuous flower/petal shower across the website.
+- Music starts when the user taps Open Invitation if `public/audio/wedding.mp3` exists.
+
+Replace the sample values in `src/main.jsx` before publishing.

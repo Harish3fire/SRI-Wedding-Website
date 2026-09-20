@@ -4,19 +4,19 @@ import "./styles.css";
 
 const WEDDING = {
   bride: "Srividhya",
-  groom: "Diwakhar",
+  groom: "Diwakar",
   dateLabel: "29 October 2026",
-  weddingDate: "2026-10-30T08:30:00",
-  weddingTime: "7:30 AM",
-  weddingVenue: "AARAV WEDDING HALL",
-  weddingAddress: "8/24, Pudhu Thottam, Ramasamy Nagar Extension II, Urumandampalayam, Gounder Mills, Coimbatore, Tamil Nadu",
+  weddingDate: "2026-10-29T09:30:00",
+  weddingTime: "9:30 AM",
+  weddingVenue: "AARAV Wedding Hall",
+  weddingAddress: "8/24, pudhu thottam, Ramasamy Nagar Extension II, Urumandampalayam, Gounder Mills, Coimbatore, Tamil Nadu 641029",
   receptionDate: "29 October 2026",
   receptionTime: "6:30 PM",
-  receptionVenue: "AARAV WEDDING HALL",
-  receptionAddress: "8/24, Pudhu Thottam, Ramasamy Nagar Extension II, Urumandampalayam, Gounder Mills, Coimbatore, Tamil Nadu",
-  brideParents: "Mr.Krishnamoorthy & Mrs.latha",
-  groomParents: "Mr.aaa & Mrs.bbb",
-  mapUrl: "https://maps.app.goo.gl/iunRucq4UXFk9npf9",
+  receptionVenue: "Sri Lakshmi Mahal",
+  receptionAddress: "8/24, pudhu thottam, Ramasamy Nagar Extension II, Urumandampalayam, Gounder Mills, Coimbatore, Tamil Nadu 641029",
+  brideParents: "Mr.Krishnamoorthy & Mrs. Latha",
+  groomParents: "Mr. & Mrs. Groom's Parents",
+  mapUrl: "https://maps.app.goo.gl/1z6XK4kEfS7jFKqaA",
   whatsappNumber: "8105778991"
 };
 
@@ -77,16 +77,77 @@ function Countdown() {
   );
 }
 
+function FlowerShower() {
+  const petals = Array.from({ length: 34 }, (_, i) => ({
+    id: i,
+    left: `${(i * 29) % 101}%`,
+    delay: `${-((i * 1.73) % 10)}s`,
+    duration: `${7 + ((i * 13) % 7)}s`,
+    size: `${12 + ((i * 17) % 13)}px`,
+    drift: `${-55 + ((i * 31) % 111)}px`,
+    rotate: `${(i * 47) % 360}deg`,
+  }));
+
+  return (
+    <div className="flower-shower" aria-hidden="true">
+      {petals.map(petal => (
+        <span
+          key={petal.id}
+          className="falling-flower"
+          style={{
+            left: petal.left,
+            animationDelay: petal.delay,
+            animationDuration: petal.duration,
+            fontSize: petal.size,
+            ['--drift']: petal.drift,
+            ['--rotate']: petal.rotate,
+          }}
+        >
+          {petal.id % 3 === 0 ? '✿' : petal.id % 3 === 1 ? '❀' : '✽'}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function Section({ id, className = "", children }) {
   return <section id={id} className={`section ${className}`}>{children}</section>;
 }
 
 function App() {
   const [opened, setOpened] = useState(false);
+  const [opening, setOpening] = useState(false);
   const [music, setMusic] = useState(false);
   const [rsvp, setRsvp] = useState({ name: "", guests: "1", attending: "yes" });
 
   useReveal();
+
+  const openInvitation = () => {
+    if (opening || opened) return;
+    setOpening(true);
+
+    const audio = document.getElementById("wedding-music");
+    if (audio) {
+      audio.volume = 0.55;
+      audio.play().then(() => setMusic(true)).catch(() => {});
+    }
+
+    window.setTimeout(() => {
+      setOpened(true);
+      setOpening(false);
+    }, 1900);
+  };
+
+  const toggleMusic = () => {
+    const audio = document.getElementById("wedding-music");
+    if (!audio) return;
+    if (music) {
+      audio.pause();
+      setMusic(false);
+    } else {
+      audio.play().then(() => setMusic(true)).catch(() => {});
+    }
+  };
 
   const submitRsvp = e => {
     e.preventDefault();
@@ -97,26 +158,55 @@ function App() {
 
   return (
     <main>
+      <audio id="wedding-music" loop preload="auto">
+        <source src="/audio/wedding.mp3" type="audio/mpeg" />
+      </audio>
+
+      <FlowerShower />
+
       {!opened && (
-        <div className="opening-screen">
-          <div className="opening-flower flower-a">✿</div>
-          <div className="opening-flower flower-b">❀</div>
-          <div className="door-glow" />
-          <div className="opening-door">
-            <p className="eyebrow">YOU ARE INVITED</p>
-            <h1>{WEDDING.groom}<span>&</span>{WEDDING.bride}</h1>
-            <p className="opening-date">{WEDDING.dateLabel}</p>
-            <button className="gold-button" onClick={() => setOpened(true)}>
-              Open Invitation
-            </button>
+        <div className={`opening-screen ${opening ? "opening" : ""}`}>
+          <div className="opening-aura" />
+          <div className="opening-mandala mandala-one">✽</div>
+          <div className="opening-mandala mandala-two">✽</div>
+
+          <div className="opening-shrine">
+            <div className="opening-garland garland-left">❀ ❀ ❀ ❀</div>
+            <div className="opening-garland garland-right">❀ ❀ ❀ ❀</div>
+
+            <div className="opening-content">
+              <p className="eyebrow">YOU ARE INVITED</p>
+              <h1>{WEDDING.groom}<span>&</span>{WEDDING.bride}</h1>
+              <p className="opening-date">{WEDDING.dateLabel}</p>
+              <div className="opening-ornament">✦</div>
+              <button className="gold-button opening-button" onClick={openInvitation} disabled={opening}>
+                {opening ? "Opening…" : "Open Invitation"}
+              </button>
+            </div>
+
+            <div className="door-panel door-left" />
+            <div className="door-panel door-right" />
+
+            <div className="door-lamp lamp-left">
+              <div className="lamp-flame" />
+              <div className="lamp-bowl" />
+            </div>
+            <div className="door-lamp lamp-right">
+              <div className="lamp-flame" />
+              <div className="lamp-bowl" />
+            </div>
+
+            <div className="door-floor-glow" />
           </div>
+
+          <p className="opening-hint">Tap to open the doors</p>
         </div>
       )}
 
       <div className={`site ${opened ? "site-open" : ""}`}>
         <button
           className="music-button"
-          onClick={() => setMusic(!music)}
+          onClick={toggleMusic}
           aria-label="Toggle music"
           title="Add your music file in public/audio/wedding.mp3"
         >
