@@ -1,0 +1,38 @@
+SRIVIDHYA & DIWAKAR WEDDING INVITATION
+EDITING GUIDE
+
+1. EDIT WEDDING CONTENT
+Open src/main.jsx and edit the WEDDING object near the top.
+
+2. LOCATION BUTTON
+The venue is shown under LOCATION. The red button says:
+GET DIRECTIONS TO MAHAL
+Clicking it opens WEDDING.mapUrl.
+
+3. EVENTS
+Edit WEDDING.events to change Groom Welcoming, Reception, Engagement, Wedding/Muhurtham, or add more events.
+Each event contains day, month, weekday, type, title and time.
+
+4. VIDEO
+Put your video at:
+public/video/wedding.mp4
+The video is displayed directly, without a poster/cover image.
+Background music pauses when the video plays and resumes when it is paused or finished.
+
+5. BACKGROUND MUSIC
+Put your song at:
+public/audio/wedding.mp3
+
+6. IMAGES
+Your local images belong in public/images/ and are referenced as /images/filename.jpg.
+
+7. COUNTDOWN
+WEDDING.countdownDate controls the countdown and fireworks trigger.
+Current value: 30 October 2026, 8:00 AM IST.
+
+8. GALLERY
+The old 'Our Moments / A Little Gallery' section has been removed completely.
+
+9. RUN
+npm install
+npm run dev
